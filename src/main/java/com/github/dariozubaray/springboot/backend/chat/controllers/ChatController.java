@@ -3,14 +3,19 @@ package com.github.dariozubaray.springboot.backend.chat.controllers;
 import java.util.Date;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.github.dariozubaray.springboot.backend.chat.models.documents.Mensaje;
+import com.github.dariozubaray.springboot.backend.chat.models.service.ChatService;
 
 @Controller
 public class ChatController {
+
+    @Autowired
+    private ChatService chatService;
 
     private String[] colores = {"red", "green", "blue", "magenta", "purple", "orange"};
 
@@ -23,7 +28,7 @@ public class ChatController {
             mensaje.setColor(colores[new Random().nextInt(colores.length)]);
             mensaje.setTexto("se ha conectado!");
         } else {
-            mensaje.setTexto(mensaje.getTexto());
+            chatService.guardar(mensaje);
         }
         return mensaje;
     }
